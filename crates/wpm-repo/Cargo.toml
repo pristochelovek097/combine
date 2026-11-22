@@ -1,0 +1,9 @@
+[package]
+name = "wpm-repo"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "COMBINE repository index generator"
+
+[dependencies]
+wpm-core = { path = "../core" }

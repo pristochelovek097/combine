@@ -1,0 +1,47 @@
+name: Update Packages
+
+# Rust-замена старого bash+Perl workflow.
+# Скопируйте этот файл в <wpm-repo>/.github/workflows/ и положите рядом
+# каталоги crates/core и crates/wpm-repo из этого проекта.
+
+on:
+  push:
+    paths:
+      - 'pool/**'
+      - 'lib/**'
+      - 'include/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Build wpm-repo
+        run: cargo build --release -p wpm-repo
+
+      - name: Regenerate Packages
+        run: ./target/release/wpm-repo gen
+
+      - name: Validate index
+        run: ./target/release/wpm-repo check
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Packages
+          if git diff --staged --quiet; then
+            echo "No changes detected"
+          else
+            git commit -m "chore: auto-update Packages"
+            git push
+          fi

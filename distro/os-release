@@ -1,0 +1,9 @@
+NAME="COMBINE"
+ID=combine
+ID_LIKE=linux
+PRETTY_NAME="COMBINE Linux"
+VERSION="0.2"
+VERSION_ID="0.2"
+VERSION_CODENAME=combine
+HOME_URL="https://github.com/pristochelovek097/wilix"
+ANSI_COLOR="1;36"
