@@ -9,9 +9,9 @@
 Репозиторий содержит инструменты дистрибутива:
 
 - ядро — отдельный проект, остаётся на C;
-- `init/oneinit.c` — адаптированный под COMBINE `oneinit` (источник:
-  https://github.com/pristochelovek097/oneinit) со встроенным менеджером
-  сервисов и автозапуском графики;
+- **oneinit** — отдельный репозиторий:
+  https://github.com/pristochelovek097/oneinit. В образ входит адаптированная
+  версия со встроенным менеджером сервисов и автозапуском графики;
 - **wpm** (пакетный менеджер) и **wpm-repo** (генератор индекса репозитория)
   переписаны на Rust.
 
@@ -138,7 +138,7 @@ telinit 5      # вернуть графику
 
 ## Сервисы oneinit
 
-`init/oneinit.c` сам управляет сервисами из `/etc/init.d` — это не просто
+`oneinit` (отдельный репозиторий) сам управляет сервисами из `/etc/init.d` — это не просто
 «прогнать скрипты при загрузке»:
 
 | Имя файла | Роль |
@@ -164,7 +164,9 @@ in-status                    # общий статус init, включая се
 
 ## init
 
-`init/oneinit.c` — это upstream `oneinit` на C, адаптированный под COMBINE:
+Адаптированный `oneinit` живёт в отдельном репозитории
+https://github.com/pristochelovek097/oneinit и представляет собой upstream
+`oneinit` на C, доработанный под COMBINE:
 исправлена опечатка `setup_devpts_for` → `setup_devpts`, заменён брендинг
 `wilix` → `COMBINE` / hostname `combine`, добавлен нативный менеджер сервисов
 (см. выше) и поддержка runlevel 5. Утилиты `telinit`, `in-status` и
@@ -176,13 +178,13 @@ in-status                    # общий статус init, включая се
 crates/core/       общие модули: Packages, MD5, файловые утилиты
 crates/wpm/        пакетный менеджер
 crates/wpm-repo/   генератор/валидатор индекса
-init/              oneinit для COMBINE (C) + менеджер сервисов
 distro/build.sh    сборка rootfs + ISO (включая X11)
 distro/install.sh  установка на виртуальный диск из live-образа
 distro/run-vm.sh   загрузка ISO в QEMU с disposable QCOW2
 distro/os-release  метаданные COMBINE
 distro/combine.iso готовый загрузочный образ
 contrib/           workflow для wpm-repo
+oneinit            отдельный репозиторий: github.com/pristochelovek097/oneinit
 ```
 
 ## Ограничения
