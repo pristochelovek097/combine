@@ -10,6 +10,7 @@ OUT="${OUT:-/tmp/opencode/combine-build}"
 KERNEL="${KERNEL:-$(ls -1 /boot/vmlinuz-* 2>/dev/null | sort -V | tail -n1)}"
 BUSYBOX_URL="${BUSYBOX_URL:-https://raw.githubusercontent.com/pristochelovek097/wpm-repo/main/pool/main/busybox}"
 REPO_URL="${REPO_URL:-https://raw.githubusercontent.com/pristochelovek097/wpm-repo/main}"
+ONEINIT_REPO="${ONEINIT_REPO:-https://github.com/pristochelovek097/oneinit.git}"
 ROOT="$OUT/root"
 
 [ -n "$KERNEL" ] && [ -e "$KERNEL" ] || { echo "no kernel found; set KERNEL=" >&2; exit 1; }
@@ -25,8 +26,9 @@ ln -sfn usr/lib "$ROOT/lib"
 ln -sfn usr/lib "$ROOT/lib64"
 ln -sfn lib "$ROOT/usr/lib64"
 
-echo "==> init (C, static)"
-gcc -static -O2 -s -o "$ROOT/init" "$PROJECT/init/oneinit.c"
+echo "==> init (C, static) from $ONEINIT_REPO"
+git clone -q --depth 1 "$ONEINIT_REPO" "$OUT/oneinit"
+gcc -static -O2 -s -o "$ROOT/init" "$OUT/oneinit/init.c"
 
 echo "==> busybox (init helper: getty/login/stty/ip/umount)"
 curl -fsSL -o "$ROOT/bin/busybox" "$BUSYBOX_URL"

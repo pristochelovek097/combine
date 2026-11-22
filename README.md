@@ -80,6 +80,9 @@ wpm-repo check --root /path/to/wpm-repo   # сверить Size и MD5 всех 
 
 ## Загрузочный ISO
 
+Сборка сама клонирует `oneinit` из отдельного репозитория (переопределяется
+переменной `ONEINIT_REPO`).
+
 ```bash
 bash distro/build.sh
 # -> /tmp/opencode/combine-build/combine.iso
